@@ -11,7 +11,7 @@ The dependancies to run this code are -
 
 To train the classifier just execute the following command -
 
-  python trainClass.py [path to training folder] [image filter] [feature descriptor]
+    python trainClass.py [path to training folder] [image filter] [feature descriptor]
 
 The compatible image filters are - gabor filter and gaussan filter. For gabor filter, pass 'gabor' as the parameter in image filter. For gaussian filter, pass 'gauss' as the parameter, for no filter, pass 'None' as the parameter.
 
@@ -19,6 +19,6 @@ The compatible feature descriptors are HOG and SIFT. For HOG, pass 'hog' as the 
 
 To test the classifier execute the following command - 
 
-  python patClassify.py [path to test folder] [class label]
+    python patClassify.py [path to test folder] [class label]
 
 If you are testing the Checks folder, pass class label as 1. For stripe, pass class label as 2 and for Solids pass class label as 3.
