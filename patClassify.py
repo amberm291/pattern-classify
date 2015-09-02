@@ -8,7 +8,39 @@ import cPickle as pickle
 from urllib2 import urlopen
 import sys
 
-string = sys.argv[1]
+def sift(img):
+	grayImg = cv2.cvtColor(img,cv2.COLOR_BGR2GRAY)
+	grayImg = cv2.resize(img,None,fx=0.25,fy=0.25)
+	grayImg = grayImg.astype(np.uint8)  
+	dense = cv2.FeatureDetector_create("Dense")
+	sift = cv2.SIFT()
+	kp = dense.detect(grayImg)
+	kp,des = sift.compute(grayImg,kp)
+	size = des.shape
+	imgFeature = np.reshape(des,(1,size[0]*size[1]))
+	return imgFeature
+
+def hog(img):
+	grayImg = cv2.cvtColor(img,cv2.COLOR_BGR2GRAY)
+	hogDescrip = cv2.HOGDescriptor()
+	grayImg = cv2.resize(grayImg,None,fx=0.25,fy=0.25)
+	hogFeature = hogDescrip.compute(grayImg)
+	imgFeature = hogFeature.T
+	return imgFeature
+
+def gabor(img):
+	kern = cv2.getGaborKernel((31,31),3.85,np.pi/4,8.0, 1.0, 0, ktype=cv2.CV_32F)
+	img = cv2.filter2D(img, cv2.CV_8UC3, kern)
+	return img
+
+def gauss(img):
+	img = cv2.GaussianBlur(img,(5,5),0)
+	return img
+
+testPath = sys.argv[1]
+strLabel = sys.argv[2]
+params = open('config').read()
+imgFilter, featDescrip = params.split("\t")
 
 '''function to calssify an image'''
 def classify(img):
@@ -25,16 +57,11 @@ def classify(img):
 			'''if no of lines greater than 100, we use the classifier'''
 		else:
 			'''start code block from here'''
-			
-			img = cv2.GaussianBlur(img,(5,5),0)
-			grayImg = cv2.resize(img,None,fx=0.25,fy=0.25)
-			grayImg = grayImg.astype(np.uint8)  
-			dense = cv2.FeatureDetector_create("Dense")
-			sift = cv2.SIFT()
-			kp = dense.detect(grayImg)
-			kp,des = sift.compute(grayImg,kp)
-			size = des.shape
-			imgFeature = np.reshape(des,(1,size[0]*size[1]))
+			if imgFilter == 'None':
+				imgFeature = eval(featDescrip+'(img)')
+			else:
+				filteredImg = eval(imgFilter+'(img)')
+				imgFeature = eval(featDescrip+'(filteredImg)')
 
 			'''till here'''
 			scaler = pickle.load(open("scaler.p","rb"))
@@ -77,9 +104,9 @@ def pattern(**kwargs):
 
 
 def main():
-	files = glob.glob('../' + string + 'Test/*.jpeg')
+	files = glob.glob(testPath+'/*')
 	label = np.zeros((2,len(files)))
-	label[1,:] = 3*np.ones(len(files))
+	label[1,:] = int(strLabel)*np.ones(len(files))
 	c = 0
 	for i in xrange(len(files)):
 		print "processing",files[i]
