@@ -1,0 +1,4 @@
+MNIST_data/
+*.out
+mnistClassify.py
+*.p
