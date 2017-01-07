@@ -3,13 +3,15 @@
 This repository is a collection of files to build a classifier to classify images based on their pattern. The link to the training and testing folder can be found here - 
   https://goo.gl/1JAerx
 
-THe results of HOG, SIFT along with gaussian and gabor kernels are tabulated below - 
+The accuracies of HOG, SIFT along with gaussian and gabor kernels are tabulated below - 
 
 | Filter type   | HOG           | SIFT  |
 | :------------:|:-------------:| :----:|
 | No filter     | 88.05         | 89.09 |
 | Gabor         | 89.81         | 88.20 |
 | Gaussian      | 88.93         | 88.64 |
+
+I'm also trying a Convolutional Neural Network on this data, will upload the results as soon as I'm done.
 
 The dependancies to run this code are - 
 1. Python 2.7
