@@ -11,7 +11,7 @@ The accuracies of HOG, SIFT along with gaussian and gabor kernels are tabulated 
 | Gabor         | 89.81         | 88.20 |
 | Gaussian      | 88.93         | 88.64 |
 
-I'm also trying a Convolutional Neural Network on this data, will upload the results as soon as I'm done.
+We are also trying a Convolutional Neural Network on this data. Will upload the results as soon as we are done.
 
 The dependancies to run this code are - 
 1. Python 2.7
